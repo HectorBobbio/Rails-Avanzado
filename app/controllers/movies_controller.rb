@@ -9,15 +9,11 @@ class MoviesController < ApplicationController
   end
   def new
     @movie = Movie.new
-  end 
+  end
   def create
-    if (@movie = Movie.create(movie_params))
-      redirect_to movies_path, :notice => "#{@movie.title} created."
-    else
-      flash[:alert] = "Movie #{@movie.title} could not be created: " +
-        @movie.errors.full_messages.join(",")
-      render 'new'
-    end
+    @movie = Movie.create!(movie_params)
+    flash[:notice] = "#{@movie.title} was successfully created."
+    redirect_to movies_path
   end
   def edit
     @movie = Movie.find params[:id]
@@ -43,4 +39,3 @@ class MoviesController < ApplicationController
     params[:movie].permit(:title,:rating,:release_date)
   end
 end
-
